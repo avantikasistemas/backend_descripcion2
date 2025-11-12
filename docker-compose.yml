@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: https://github.com/avantikasistemas/backend_verificacion_st.git#master
+      context: https://github.com/avantikasistemas/backend_descripcion2.git#master
       dockerfile: Dockerfile
     container_name: descripcion2-backend
     ports:
@@ -23,7 +23,7 @@ services:
 
   frontend:
     build:
-      context: https://github.com/avantikasistemas/frontend_verificacion_st.git#master
+      context: https://github.com/avantikasistemas/frontend_descripcion2.git#master
       dockerfile: Dockerfile
       args:
         - VITE_API_URL=http://130.1.1.7:8013
