@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: https://github.com/avantikasistemas/backend_verificacion_st.git#master
+      dockerfile: Dockerfile
+    container_name: descripcion2-backend
+    ports:
+      - "8013:8013"
+    environment:
+      - DRIVER=${DRIVER}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - ENCRYPT=${ENCRYPT}
+      - TRUST_CERTIFICATE=${TRUST_CERTIFICATE}
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: https://github.com/avantikasistemas/frontend_verificacion_st.git#master
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://130.1.1.7:8013
+    container_name: descripcion2-frontend
+    ports:
+      - "5188:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
