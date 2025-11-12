@@ -36,7 +36,8 @@ class Descripcion:
                 {
                     "codigo": row[0],
                     "valor_unitario": float(row[1]) if row[1] is not None else 0,
-                    "descripcion2": row[2]
+                    "descripcion2": row[2],
+                    "cantidad": float(row[3]) if row[3] is not None else 0
                 }
                 for row in result1
             ]
@@ -45,7 +46,8 @@ class Descripcion:
                 {
                     "codigo": row[0],
                     "valor_unitario": float(row[1]) if row[1] is not None else 0,
-                    "descripcion2": row[2]
+                    "descripcion2": row[2],
+                    "cantidad": float(row[3]) if row[3] is not None else 0
                 }
                 for row in result2
             ]
@@ -92,6 +94,7 @@ class Descripcion:
             for desc in descripciones:
                 codigo = desc.get("codigo")
                 valor_unitario = desc.get("valor_unitario")
+                cantidad = desc.get("cantidad")
                 descripcion2 = desc.get("descripcion2")
 
                 if not codigo or descripcion2 is None:
@@ -101,7 +104,8 @@ class Descripcion:
                     rows = self.querys.actualizar_descripcion_documento(
                         numero, 
                         codigo, 
-                        valor_unitario, 
+                        valor_unitario,
+                        cantidad, 
                         descripcion2
                     )
                     actualizados += rows

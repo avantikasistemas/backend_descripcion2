@@ -81,7 +81,7 @@ class Querys:
         """
         try:
             query = text("""
-                SELECT codigo, valor_unitario, descripcion2 
+                SELECT codigo, valor_unitario, descripcion2, cantidad
                 FROM documentos_lin_ped 
                 WHERE numero = :numero AND sw = 1 AND descripcion2 IS NULL 
                 ORDER BY codigo ASC
@@ -106,7 +106,7 @@ class Querys:
         """
         try:
             query = text("""
-                SELECT codigo, valor_unitario, descripcion2 
+                SELECT codigo, valor_unitario, descripcion2, cantidad 
                 FROM documentos_lin_ped_historia 
                 WHERE numero = :numero AND sw = 1 
                 ORDER BY codigo ASC
@@ -119,7 +119,7 @@ class Querys:
             raise CustomException(f"Error al buscar documentos históricos: {str(e)}")
 
     # Query para actualizar descripción de un documento
-    def actualizar_descripcion_documento(self, numero: str, codigo: str, valor_unitario: float, descripcion2: str):
+    def actualizar_descripcion_documento(self, numero: str, codigo: str, valor_unitario: float, cantidad: float, descripcion2: str):
         """
         Actualiza la descripción2 de un documento específico.
         
@@ -127,6 +127,7 @@ class Querys:
             numero (str): Número de pedido
             codigo (str): Código del producto
             valor_unitario (float): Valor unitario del producto
+            cantidad (float): Cantidad del producto
             descripcion2 (str): Nueva descripción
             
         Returns:
@@ -140,13 +141,15 @@ class Querys:
                 AND sw = 1 
                 AND codigo = :codigo 
                 AND valor_unitario = :valor_unitario
+                AND cantidad = :cantidad
             """)
             
             result = self.db.execute(query, {
                 "descripcion2": descripcion2,
                 "numero": numero,
                 "codigo": codigo,
-                "valor_unitario": valor_unitario
+                "valor_unitario": valor_unitario,
+                "cantidad": cantidad
             })
             
             self.db.commit()
