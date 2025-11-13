@@ -27,30 +27,9 @@ class Descripcion:
             if not numero:
                 raise CustomException("El número de pedido es requerido")
 
-            # Ejecutar consultas usando querys
-            result1 = self.querys.buscar_documentos_actuales(numero)
-            result2 = self.querys.buscar_documentos_historia(numero)
-            
-            # Convertir resultados a lista de diccionarios
-            documentos_actuales = [
-                {
-                    "codigo": row[0],
-                    "valor_unitario": float(row[1]) if row[1] is not None else 0,
-                    "descripcion2": row[2],
-                    "cantidad": float(row[3]) if row[3] is not None else 0
-                }
-                for row in result1
-            ]
-            
-            documentos_historia = [
-                {
-                    "codigo": row[0],
-                    "valor_unitario": float(row[1]) if row[1] is not None else 0,
-                    "descripcion2": row[2],
-                    "cantidad": float(row[3]) if row[3] is not None else 0
-                }
-                for row in result2
-            ]
+            # Ejecutar consultas usando querys (ya retornan diccionarios)
+            documentos_actuales = self.querys.buscar_documentos_actuales(numero)
+            documentos_historia = self.querys.buscar_documentos_historia(numero)
             
             return self.tools.output(
                 200, 
@@ -92,6 +71,7 @@ class Descripcion:
 
             # Actualizar cada descripción
             for desc in descripciones:
+                seq = desc.get("seq")
                 codigo = desc.get("codigo")
                 valor_unitario = desc.get("valor_unitario")
                 cantidad = desc.get("cantidad")
@@ -103,6 +83,7 @@ class Descripcion:
                 try:
                     rows = self.querys.actualizar_descripcion_documento(
                         numero, 
+                        seq,
                         codigo, 
                         valor_unitario,
                         cantidad, 
